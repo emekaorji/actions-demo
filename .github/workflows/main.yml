@@ -1,15 +1,43 @@
-on: [push]
+---
+name: Update Firestore Database
+
+on:
+  push:
+    branches:
+      - master
 
 jobs:
-  hello_world_job:
+  databaseOperation:
     runs-on: ubuntu-latest
-    name: A job to say hello
+
+    name: Add data to Firestore Database
+
     steps:
-    - name: Hello world action step
-      id: hello
-      uses: emekaorji/actions-demo@v2
-      with:
-        who-to-greet: 'Emeka'
-    # Use the output from the `hello` step
-    - name: Get the output time
-      run: echo "The time was ${{ steps.hello.outputs.time }}"
+      - uses: actions/checkout@master
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@master
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        id: npmInstall
+        run: npm install
+
+      - name: Push to Firestore Database
+        id: updateFirebase
+        uses: emekaorji/actions-demo@v2
+        with:
+          apiKey: ${{ secrets.API_KEY }}
+          authDomain: ${{ secrets.AUTH_DOMAIN }}
+          databaseURL: ${{ secrets.DATABASE_URL }}
+          projectId: ${{ secrets.PROJECT_ID }}
+          storageBucket: ${{ secrets.STORAGE_BUCKET }}
+          messagingSenderId: ${{ secrets.MESSAGING_SENDER_ID }}
+          appId: ${{ secrets.APP_ID }}
+          measurementId: ${{ secrets.MEASUREMENT_ID }}
+          path: actions-demo/pushes
+          value: ${{ github.ref }}
+
+      - name: Get the response from the firestore operation
+        run: echo "The response from the operation is ${{ steps.hello.outputs.response }}"
