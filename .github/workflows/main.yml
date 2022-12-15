@@ -31,6 +31,7 @@ jobs:
           credentials: ${{ secrets.FIREBASE_CREDENTIALS }}
           databaseUrl: ${{ secrets.FIREBASE_DATABASE_URL }}
           path: actions-demo/pushes
+          id: ${{ github.ref }}
           value: ${{ github.ref }}
 
       - name: Get the response from the firestore operation

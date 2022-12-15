@@ -56,10 +56,11 @@ const updateFirestoreDatabase = (path, value, id) => {
 
 const processAction = () => {
 	const path = getInput('path', isRequired);
+	const id = getInput('id', isRequired);
 	const value = getValue();
 
 	try {
-		updateFirestoreDatabase(path, value);
+		updateFirestoreDatabase(path, value, id);
 
 		const payload = JSON.stringify(context.payload, undefined, 2);
 		console.log(`The event payload is ${payload}`);

@@ -14,6 +14,9 @@ inputs:
   path:
     description: Path to what you want to set in your database
     required: true
+  id:
+    description: Id of the data
+    required: true
   value:
     description: Value to be set
     required: false
