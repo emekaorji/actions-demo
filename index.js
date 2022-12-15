@@ -1,13 +1,15 @@
-const core = require('@actions/core');
-const firebase = require('firebase');
+import { info, getInput, setFailed, ExitCode, setOutput } from '@actions/core';
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 
 const isRequired = {
 	required: true,
 };
 
 const getValue = () => {
-	core.info('Trying to parse expected value');
-	const value = core.getInput('value');
+	info('Trying to parse expected value');
+	const value = getInput('value');
 
 	if (!value) {
 		return Date.now();
@@ -28,61 +30,63 @@ const getValue = () => {
 
 const initFirebase = () => {
 	try {
-		core.info('Initialized Firebase Connection');
+		info('Initialized Firebase Connection');
 		const firebaseConfig = {
-			apiKey: core.getInput('apiKey', isRequired),
-			authDomain: core.getInput('authDomain', isRequired),
-			databaseURL: core.getInput('databaseURL', isRequired),
-			projectId: core.getInput('projectId', isRequired),
-			storageBucket: core.getInput('storageBucket', isRequired),
-			messagingSenderId: core.getInput('messagingSenderId', isRequired),
-			appId: core.getInput('appId', isRequired),
-			measurementId: core.getInput('measurementId', isRequired),
+			apiKey: getInput('apiKey', isRequired),
+			authDomain: getInput('authDomain', isRequired),
+			databaseURL: getInput('databaseURL', isRequired),
+			projectId: getInput('projectId', isRequired),
+			storageBucket: getInput('storageBucket', isRequired),
+			messagingSenderId: getInput('messagingSenderId', isRequired),
+			appId: getInput('appId', isRequired),
+			measurementId: getInput('measurementId', isRequired),
 		};
 
-		const app = firebase.initializeApp(firebaseConfig);
+		const app = initializeApp(firebaseConfig);
 		return app;
 	} catch (error) {
-		core.setFailed(JSON.stringify(error));
-		process.exit(core.ExitCode.Failure);
+		setFailed(JSON.stringify(error));
+		process.exit(ExitCode.Failure);
 	}
 };
 
-const updateFirestoreDatabase = (path, value) => {
-	core.info(
+const updateFirestoreDatabase = async (path, value) => {
+	info(
 		`Updating Firestore Database with a new document at collection: ${path}`
 	);
 
 	const app = initFirebase();
+	const db = getFirestore(app);
 
-	firebase
-		.firestore(app)
-		.collection(path)
-		.add(value)
-		.then(
-			(res) => {
-				core.setOutput('response', res.id);
-				process.exit(core.ExitCode.Success);
-			},
-			(reason) => {
-				core.setFailed(JSON.stringify(reason));
-				process.exit(core.ExitCode.Failure);
-			}
-		);
+	await addDoc(collection(db, path), { githubResponse: value });
+
+	// firestore(app)
+	// 	.collection(path)
+	// 	.add(value)
+	// 	.then(
+	// 		(res) => {
+	// 			setOutput('response', res.id);
+	// 			process.exit(ExitCode.Success);
+	// 		},
+	// 		(reason) => {
+	// 			setFailed(JSON.stringify(reason));
+	// 			process.exit(ExitCode.Failure);
+	// 		}
+	// 	);
 };
 
-const processAction = () => {
+const processAction = async () => {
 	try {
-		const path = core.getInput('path', isRequired);
+		const path = getInput('path', isRequired);
 		const value = getValue();
 
-		updateFirestoreDatabase(path, value);
+		await updateFirestoreDatabase(path, value);
 
 		const payload = JSON.stringify(github.context.payload, undefined, 2);
 		console.log(`The event payload is ${payload}`);
 	} catch (error) {
-		core.setFailed(JSON.stringify(error));
-		process.exit(core.ExitCode.Failure);
+		setFailed(JSON.stringify(error));
+		process.exit(ExitCode.Failure);
 	}
 };
 
