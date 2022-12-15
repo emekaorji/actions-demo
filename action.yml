@@ -1,13 +1,43 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: Update Firestore Database
+description: Update a field in firestore database
+author: Emeka Orji
 inputs:
-  who-to-greet: # id of input
-    description: 'Who to greet'
+  apiKey:
+    description: API Key
     required: true
-    default: 'Hello'
+  authDomain:
+    description: Auth Domain
+    required: true
+  databaseURL:
+    description: Database URL
+    required: true
+  projectId:
+    description: Project ID
+    required: true
+  storageBucket:
+    description: Storage Bucket
+    required: true
+  messagingSenderId:
+    description: Message Sender ID
+    required: true
+  appId:
+    description: App ID
+    required: true
+  measurementId:
+    description: Measurement ID
+    required: true
+  path:
+    description: Path to what you want to set in your database
+    required: true
+  value:
+    description: Value to be set
+    required: false
 outputs:
-  time: # id of output
-    description: 'Time of greeting'
+  response:
+    description: 'The response from the firestore operation'
+branding:
+  icon: 'activity'
+  color: 'gray-dark'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'index.js'
