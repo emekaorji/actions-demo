@@ -15,9 +15,15 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: Bundle App
-        id: bundle
-        run: ncc build src/index.js -o dist
+      - uses: tool3/ncc@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          src: 'src/index.js'
+      - uses: actions/upload-artifact@v1
+        with:
+          name: dist
+          path: dist/
+          allow_unrelated: true
 
   databaseUpdate:
     runs-on: ubuntu-latest
