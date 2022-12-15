@@ -5,29 +5,11 @@ description: Update a field in firestore database
 author: Emeka Orji
 
 inputs:
-  apiKey:
-    description: API Key
+  credentials:
+    description: Firebase Credentials
     required: true
-  authDomain:
-    description: Auth Domain
-    required: true
-  databaseURL:
-    description: Database URL
-    required: true
-  projectId:
-    description: Project ID
-    required: true
-  storageBucket:
-    description: Storage Bucket
-    required: true
-  messagingSenderId:
-    description: Message Sender ID
-    required: true
-  appId:
-    description: App ID
-    required: true
-  measurementId:
-    description: Measurement ID
+  databaseUrl:
+    description: Firebase Database URL
     required: true
   path:
     description: Path to what you want to set in your database
