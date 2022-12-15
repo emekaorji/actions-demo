@@ -21,8 +21,12 @@ jobs:
           node-version: 16.x
 
       - name: Install Dependencies
-        id: npmInstall
+        id: depsInstall
         run: npm install
+
+      - name: Install Firebase Admin
+        id: firebaseAdminInstall
+        run: npm install firebase-admin --save
 
       - name: Push to Firestore Database
         id: updateFirebase
