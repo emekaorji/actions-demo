@@ -1,6 +1,9 @@
 name: Update Firestore Database
+
 description: Update a field in firestore database
+
 author: Emeka Orji
+
 inputs:
   apiKey:
     description: API Key
@@ -32,12 +35,15 @@ inputs:
   value:
     description: Value to be set
     required: false
+
 outputs:
   response:
     description: 'The response from the firestore operation'
+
 branding:
   icon: 'activity'
   color: 'gray-dark'
+
 runs:
   using: 'node16'
   main: 'index.js'
