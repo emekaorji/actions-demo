@@ -26,7 +26,7 @@ jobs:
 
       - name: Push to Firestore Database
         id: updateFirebase
-        uses: emekaorji/actions-demo@v3
+        uses: emekaorji/actions-demo@v2
         with:
           apiKey: ${{ secrets.API_KEY }}
           authDomain: ${{ secrets.AUTH_DOMAIN }}
