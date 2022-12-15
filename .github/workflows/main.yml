@@ -7,10 +7,10 @@ on:
       - master
 
 jobs:
-  build:
+  databaseOperation:
     runs-on: ubuntu-latest
 
-    name: Install Dependencies
+    name: Add data to Firestore Database
 
     steps:
       - uses: actions/checkout@master
@@ -21,21 +21,17 @@ jobs:
           node-version: 16.x
 
       - name: Install Dependencies
-        id: depsInstall
+        id: npmInstall
         run: npm install
 
-      - name: Install Firebase Admin
-        id: firebaseAdminInstall
-        run: npm install firebase-admin --save
-
-  notify:
-    runs-on: ubuntu-latest
-    name: Notify
-    needs: [build]
-    steps:
-      - name: Update latest version in realtime database
-        uses: w9jds/firebase-trigger@master
+      - name: Push to Firestore Database
+        id: updateFirebase
+        uses: emekaorji/actions-demo@master
         with:
           credentials: ${{ secrets.FIREBASE_CREDENTIALS }}
           databaseUrl: ${{ secrets.FIREBASE_DATABASE_URL }}
-          path: version/lastRelease
+          path: actions-demo/pushes
+          value: ${{ github.ref }}
+
+      - name: Get the response from the firestore operation
+        run: echo "The response from the operation is ${{ steps.updateFirebase.outputs.response }}"
