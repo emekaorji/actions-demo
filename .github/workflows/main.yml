@@ -7,24 +7,27 @@ on:
       - master
 
 jobs:
-  databaseOperation:
+  build:
     runs-on: ubuntu-latest
 
-    name: Add data to Firestore Database
+    name: Build App
 
     steps:
       - uses: actions/checkout@master
 
-      - name: Setup NodeJS
-        uses: actions/setup-node@master
-        with:
-          node-version: 16.x
+      - name: Bundle App
+        id: bundle
+        run: ncc build src/index.js -o dist
 
-      - name: Install Dependencies
-        id: npmInstall
-        run: npm install
+  databaseUpdate:
+    runs-on: ubuntu-latest
 
-      - name: Push to Firestore Database
+    name: Add data to Firebase Realtime Database
+
+    needs: [build]
+
+    steps:
+      - name: Setup Firebase and Push Data
         id: updateFirebase
         uses: emekaorji/actions-demo@master
         with:

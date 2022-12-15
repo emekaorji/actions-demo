@@ -62,6 +62,7 @@ const processAction = () => {
 	try {
 		updateFirestoreDatabase(path, value, id);
 
+		core.setOutput('payload', context.payload);
 		const payload = JSON.stringify(context.payload, undefined, 2);
 		console.log(`The event payload is ${payload}`);
 	} catch (error) {
