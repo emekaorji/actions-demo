@@ -2,7 +2,7 @@
 name: Update Firestore Database
 
 on:
-  pull_request:
+  push:
     branches:
       - master
 
