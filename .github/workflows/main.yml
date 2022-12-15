@@ -18,7 +18,7 @@ jobs:
       - name: Setup NodeJS
         uses: actions/setup-node@master
         with:
-          node-version: 18
+          node-version: 16.x
 
       - name: Install Dependencies
         id: npmInstall
@@ -40,4 +40,4 @@ jobs:
           value: ${{ github.ref }}
 
       - name: Get the response from the firestore operation
-        run: echo "The response from the operation is ${{ steps.hello.outputs.response }}"
+        run: echo "The response from the operation is ${{ steps.updateFirebase.outputs.response }}"
