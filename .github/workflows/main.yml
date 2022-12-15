@@ -37,5 +37,5 @@ jobs:
         uses: w9jds/firebase-trigger@master
         with:
           credentials: ${{ secrets.FIREBASE_CREDENTIALS }}
-          databaseUrl: https://[project_id].firebaseio.com
+          databaseUrl: ${{ secrets.FIREBASE_DATABASE_URL }}
           path: version/lastRelease
