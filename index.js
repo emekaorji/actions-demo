@@ -1,4 +1,4 @@
-import { info, getInput, setFailed, ExitCode, setOutput } from '@actions/core';
+import { info, getInput, setFailed, ExitCode } from '@actions/core';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { collection, addDoc } from 'firebase/firestore';
